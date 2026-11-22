@@ -1,0 +1,5 @@
+[
+  {"slug":"casa-nativa","title":"Casa Nativa","category":"Institucional","description":"Uma presença digital acolhedora para um estúdio de arquitetura e interiores.","price_label":"Sob consulta","accent":"mint","badge":"ARQUITETURA","mock_title":"Espaços com<br>histórias para contar.","demo_url":"","image_url":"","is_visible":true,"sort_order":1},
+  {"slug":"flor-de-sol","title":"Flor de Sol","category":"Loja virtual","description":"Uma loja leve e intuitiva para uma marca independente de cuidado pessoal.","price_label":"Sob consulta","accent":"sun","badge":"E-COMMERCE","mock_title":"Um cuidado<br>que floresce.","demo_url":"","image_url":"","is_visible":true,"sort_order":2},
+  {"slug":"movimento-livre","title":"Movimento Livre","category":"Landing page","description":"Uma página de campanha direta, feita para transformar interesse em contato.","price_label":"Sob consulta","accent":"rose","badge":"CAMPANHA","mock_title":"Seu próximo<br>passo começa aqui.","demo_url":"","image_url":"","is_visible":true,"sort_order":3}
+]
