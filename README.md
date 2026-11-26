@@ -29,9 +29,11 @@ O projeto usa Supabase para guardar pedidos, projetos, configurações e as cont
    - `SUPABASE_SECRET_KEY`: a chave Secret `sb_secret_...` do Supabase.
    - `SESSION_SECRET`: um segredo aleatório com pelo menos 32 caracteres.
    - `ADMIN_SETUP_KEY`: outro segredo aleatório, com pelo menos 32 caracteres, que vocês usarão uma vez para criar os dois acessos.
+   - `ADMIN_GATE_USER`: usuário da primeira barreira de acesso ao painel.
+   - `ADMIN_GATE_PASSWORD`: senha da primeira barreira de acesso ao painel, diferente das senhas dos administradores.
 
 4. Salve e faça um novo deploy para aplicar as variáveis.
-5. Abra `https://SEU-SITE.vercel.app/admin`, informe `ADMIN_SETUP_KEY` e crie os dois usuários e senhas. As senhas devem ter pelo menos 12 caracteres. O cadastro público fica fechado depois dessa primeira configuração.
+5. Abra `https://SEU-SITE.vercel.app/admin`. O navegador pedirá o usuário e a senha da primeira barreira. Depois, informe `ADMIN_SETUP_KEY` somente se o painel ainda não tiver sido configurado e crie os dois usuários e senhas. As senhas devem ter pelo menos 12 caracteres. O cadastro público fica fechado depois dessa primeira configuração.
 6. No painel, abra **Configurações** e informe o WhatsApp com DDI e DDD, por exemplo `+55 11 99999-9999`.
 
 As chaves e segredos ficam somente no servidor da Vercel; a chave Secret do Supabase nunca é enviada ao navegador. O backend autentica as sessões com cookie `HttpOnly`, e as senhas são armazenadas como hashes com salt.

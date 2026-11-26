@@ -9,6 +9,15 @@ function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 }
 
+function errorMessage(error, fallback = 'Algo deu errado. Tente novamente.') {
+  if (typeof error === 'string' && error.trim()) return error;
+  if (error && typeof error === 'object') {
+    const nested = [error.message, error.error, error.details, error.hint].find((value) => typeof value === 'string' && value.trim());
+    return nested || fallback;
+  }
+  return fallback;
+}
+
 function accentFrom(project) {
   if (['sun', 'rose', 'blue', 'ink'].includes(project.accent)) return project.accent;
   const options = ['mint', 'sun', 'rose', 'blue'];
@@ -109,13 +118,13 @@ document.querySelector('#order-form').addEventListener('submit', async (event) =
   button.disabled = true;
   try {
     const response = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || 'Não foi possível registrar seu pedido.');
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(errorMessage(result.error, 'Não foi possível registrar seu pedido.'));
     status.textContent = 'Pedido registrado! Abrindo o WhatsApp…';
     status.classList.add('success');
     window.location.assign(result.whatsappUrl);
   } catch (error) {
-    status.textContent = error.message || 'Algo deu errado. Tente novamente.';
+    status.textContent = errorMessage(error);
     button.disabled = false;
   }
 });
