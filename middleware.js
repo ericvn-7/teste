@@ -1,3 +1,5 @@
+import { next } from '@vercel/functions';
+
 const ADMIN_PATHS = new Set(['/admin', '/admin/', '/admin.html', '/admin.js', '/admin.css']);
 
 function unauthorized(message = 'Acesso restrito.') {
@@ -19,12 +21,13 @@ export default function middleware(request) {
   if (!authorization.startsWith('Basic ')) return unauthorized();
 
   let credentials = '';
-  try { credentials = atob(authorization.slice(6)); } catch { return unauthorized(); }
+  try { credentials = Buffer.from(authorization.slice(6), 'base64').toString('utf8'); } catch { return unauthorized(); }
   if (credentials !== `${username}:${password}`) return unauthorized('Usuário ou senha da área restrita inválidos.');
 
-  return;
+  return next();
 }
 
 export const config = {
+  runtime: 'nodejs',
   matcher: ['/admin', '/admin/', '/admin.html', '/admin.js', '/admin.css']
 };
