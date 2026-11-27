@@ -42,8 +42,8 @@ function renderProjects() {
 }
 
 function applySettings() {
-  const configuredName = settings.brand_name || 'Raiz Estúdio';
-  const name = configuredName === 'Raiz Studio' ? 'Raiz Estúdio' : configuredName;
+  const configuredName = settings.brand_name || 'Raiz Studio';
+  const name = configuredName === 'Raiz Estúdio' ? 'Raiz Studio' : configuredName;
   document.querySelector('#hero-tagline').textContent = settings.tagline || 'Criamos sites rápidos, bonitos e pensados para transformar visitas em conversas.';
   document.querySelectorAll('.whatsapp-link').forEach((link) => {
     const phone = String(settings.whatsapp || '').replace(/\D/g, '');
@@ -122,6 +122,19 @@ document.querySelector('#order-form').addEventListener('submit', async (event) =
     status.classList.add('success');
     window.location.assign(result.whatsappUrl);
   } catch (error) {
+    const phone = String(settings.whatsapp || '').replace(/\D/g, '');
+    if (phone.length >= 10) {
+      const message = [
+        'Olá! Quero conversar sobre um projeto de site.',
+        `Nome: ${data.name || ''}`,
+        `Meu WhatsApp: ${data.whatsapp || ''}`,
+        `Projeto: ${data.projectTitle || 'Ainda estou pensando'}`,
+        `Minha ideia: ${data.brief || ''}`
+      ].join('\n');
+      status.textContent = 'O registro automático falhou. Abrindo o WhatsApp para você concluir o envio.';
+      window.location.assign(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`);
+      return;
+    }
     status.textContent = errorMessage(error);
     button.disabled = false;
   }

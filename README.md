@@ -1,4 +1,4 @@
-# Raiz Estúdio — vitrine e encomendas
+# Raiz Studio — vitrine e encomendas
 
 Site de divulgação de projetos digitais com formulário de pedidos pelo WhatsApp e painel administrativo em `/admin`. Não há checkout nem gateway de pagamento: cada pedido é registrado para acompanhamento e, em seguida, o cliente abre uma conversa no WhatsApp.
 
@@ -21,7 +21,7 @@ O projeto usa Supabase para guardar pedidos, projetos, configurações e as cont
 
 ## Publicar na Vercel
 
-1. Importe o repositório GitHub na Vercel. Se o projeto estiver numa pasta dentro de outro repositório, defina essa pasta como **Root Directory**.
+1. Extraia o ZIP e envie para o GitHub todos os arquivos e pastas de dentro dele, mantendo `api/`, `lib/`, `assets/` e `supabase/` na raiz. Não envie o ZIP como um único arquivo. Na Vercel, a **Root Directory** precisa ser a pasta que contém `index.html`, `package.json`, `api/` e `lib/`.
 2. Escolha **Other** como Framework Preset. Deixe Build Command e Install Command vazios; use `.` como Output Directory.
 3. Em **Project Settings → Environment Variables**, cadastre:
 
@@ -35,6 +35,14 @@ O projeto usa Supabase para guardar pedidos, projetos, configurações e as cont
 4. Salve e faça um novo deploy para aplicar as variáveis.
 5. Abra `https://SEU-SITE.vercel.app/admin`. O navegador pedirá o usuário e a senha da primeira barreira. Depois, informe `ADMIN_SETUP_KEY` somente se o painel ainda não tiver sido configurado e crie os dois usuários e senhas. As senhas devem ter pelo menos 12 caracteres. O cadastro público fica fechado depois dessa primeira configuração.
 6. No painel, abra **Configurações** e informe o WhatsApp com DDI e DDD, por exemplo `+55 11 99999-9999`.
+
+## Endereço do site
+
+Fazer um novo deploy não troca o endereço de produção: a URL estável do projeto continua apontando para a versão de produção mais recente. Para ver qual é, abra o projeto na Vercel e entre em **Settings → Domains**. URLs longas com um código entre o nome do projeto e `vercel.app` identificam uma implantação específica e não são o endereço estável. Um domínio próprio só passa a funcionar depois de ser adicionado ao projeto e configurado no provedor de DNS.
+
+## Conferência após enviar os arquivos
+
+No commit do GitHub, confirme que existem `api/orders.js`, `lib/db.js`, `assets/raiz-logo.png` e `assets/raiz-studio-logo.svg`. Depois, confira na Vercel se o deployment desse commit está em **Production** e abra o domínio listado em **Settings → Domains**. Se `/api/orders` ainda retornar erro, abra **Logs → Runtime Logs**, filtre por `/api/orders` e confira o primeiro erro vermelho; não faça um pedido de teste com dados reais enquanto a função estiver falhando.
 
 As chaves e segredos ficam somente no servidor da Vercel; a chave Secret do Supabase nunca é enviada ao navegador. O backend autentica as sessões com cookie `HttpOnly`, e as senhas são armazenadas como hashes com salt.
 

@@ -100,7 +100,7 @@ function renderProjects() {
 }
 function fillSettings() {
   const form = $('#settings-form');
-  for (const [key, value] of Object.entries(state.settings)) if (form.elements[key]) form.elements[key].value = value ?? '';
+  for (const [key, value] of Object.entries(state.settings)) if (form.elements[key]) form.elements[key].value = key === 'brand_name' && value === 'Raiz Estúdio' ? 'Raiz Studio' : (value ?? '');
 }
 function openView(name) {
   document.querySelectorAll('.dashboard-view').forEach((view) => view.classList.toggle('active', view.id === `view-${name}`));
