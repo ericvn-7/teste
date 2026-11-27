@@ -56,6 +56,7 @@ insert into public.site_settings (key, value) values
   ('brand_name', '"Raiz Studio"'::jsonb),
   ('tagline', '"Criamos sites rápidos, bonitos e pensados para transformar visitas em conversas."'::jsonb),
   ('whatsapp', '""'::jsonb),
+  ('whatsapp_secondary', '""'::jsonb),
   ('instagram_url', '""'::jsonb),
   ('contact_email', '""'::jsonb)
 on conflict (key) do nothing;

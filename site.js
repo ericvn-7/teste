@@ -5,6 +5,7 @@ const defaults = {
   brand_name: 'Raiz Studio',
   tagline: 'Criamos sites rápidos, bonitos e pensados para transformar visitas em conversas.',
   whatsapp: '',
+  whatsapp_secondary: '',
   instagram_url: '',
   contact_email: ''
 };

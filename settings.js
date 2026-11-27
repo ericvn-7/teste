@@ -1,6 +1,6 @@
 const { dbRequest, query } = require('../../lib/db');
 const { requireAdmin, safeMethod } = require('../../lib/auth');
-const ALLOWED = ['brand_name', 'tagline', 'whatsapp', 'instagram_url', 'contact_email'];
+const ALLOWED = ['brand_name', 'tagline', 'whatsapp', 'whatsapp_secondary', 'instagram_url', 'contact_email'];
 
 module.exports = requireAdmin(async function handler(req, res) {
   if (req.method === 'GET') {
@@ -15,7 +15,7 @@ module.exports = requireAdmin(async function handler(req, res) {
       let value = String(input[key] ?? '').trim();
       const max = key === 'tagline' ? 240 : 180;
       value = value.slice(0, max);
-      if (key === 'whatsapp' && value && !/^\+?[0-9 ()-]{10,24}$/.test(value)) return res.status(400).json({ error: 'Informe o WhatsApp com DDI e DDD, por exemplo +55 11 99999-9999.' });
+      if (key.startsWith('whatsapp') && value && !/^\+?[0-9 ()-]{10,24}$/.test(value)) return res.status(400).json({ error: 'Informe os WhatsApps com DDI e DDD, por exemplo +55 11 99999-9999.' });
       if (key === 'instagram_url' && value) {
         try { const url = new URL(value); if (url.protocol !== 'https:') throw new Error(); }
         catch { return res.status(400).json({ error: 'O link do Instagram deve começar com https://.' }); }

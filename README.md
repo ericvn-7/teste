@@ -8,7 +8,7 @@ Site de divulgação de projetos digitais com formulário de pedidos pelo WhatsA
 - Cada administrador pode alterar o próprio usuário e senha.
 - Caixa de pedidos com dados do cliente, descrição, link de WhatsApp e etapas de acompanhamento.
 - Cadastro, edição, exclusão e publicação/ocultação de projetos de exemplo.
-- Edição do nome do estúdio, apresentação, WhatsApp, Instagram e e-mail.
+- Edição do nome do estúdio, apresentação, dois WhatsApps, Instagram e e-mail.
 
 ## Preparar o banco de dados
 
@@ -34,7 +34,7 @@ O projeto usa Supabase para guardar pedidos, projetos, configurações e as cont
 
 4. Salve e faça um novo deploy para aplicar as variáveis.
 5. Abra `https://SEU-SITE.vercel.app/admin`. O navegador pedirá o usuário e a senha da primeira barreira. Depois, informe `ADMIN_SETUP_KEY` somente se o painel ainda não tiver sido configurado e crie os dois usuários e senhas. As senhas devem ter pelo menos 12 caracteres. O cadastro público fica fechado depois dessa primeira configuração.
-6. No painel, abra **Configurações** e informe o WhatsApp com DDI e DDD, por exemplo `+55 11 99999-9999`.
+6. No painel, abra **Configurações** e informe os WhatsApps dos administradores com DDI e DDD, por exemplo `+55 11 99999-9999`. O segundo número é opcional; quando configurado, o cliente escolhe com qual administrador falar no formulário.
 
 ## Endereço do site
 
@@ -42,7 +42,9 @@ Fazer um novo deploy não troca o endereço de produção: a URL estável do pro
 
 ## Conferência após enviar os arquivos
 
-No commit do GitHub, confirme que existem `api/orders.js`, `lib/db.js`, `assets/raiz-logo.png` e `assets/raiz-studio-logo.svg`. Depois, confira na Vercel se o deployment desse commit está em **Production** e abra o domínio listado em **Settings → Domains**. Se `/api/orders` ainda retornar erro, abra **Logs → Runtime Logs**, filtre por `/api/orders` e confira o primeiro erro vermelho; não faça um pedido de teste com dados reais enquanto a função estiver falhando.
+No commit do GitHub, confirme que existem `api/orders.js`, `lib/db.js`, `assets/raiz-logo.png` e `assets/raiz-studio-logo.svg`. Depois, confira na Vercel se o deployment desse commit está em **Production** e abra o domínio listado em **Settings → Domains**. Abrir `/api/orders` no navegador deve retornar **405 Método não permitido**; se retornar 500, a função nem está inicializando. Nesse caso, abra **Logs → Runtime Logs**, filtre por `/api/orders` e confira o primeiro erro vermelho. Não faça um pedido de teste com dados reais enquanto a função estiver falhando.
+
+Se o registro falhar, o formulário mantém os dados preenchidos e mostra um aviso para tentar novamente; ele não redireciona o cliente ao WhatsApp como se o pedido tivesse sido salvo. O WhatsApp só abre depois da confirmação do registro no banco.
 
 As chaves e segredos ficam somente no servidor da Vercel; a chave Secret do Supabase nunca é enviada ao navegador. O backend autentica as sessões com cookie `HttpOnly`, e as senhas são armazenadas como hashes com salt.
 

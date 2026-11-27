@@ -9,14 +9,16 @@ module.exports = async function handler(req, res) {
   }
   const name = clean(req.body?.name, 100);
   const whatsapp = clean(req.body?.whatsapp, 30);
+  const recipient = req.body?.whatsappRecipient === 'secondary' ? 'secondary' : 'primary';
   const projectTitle = clean(req.body?.projectTitle, 120) || 'Ainda estou pensando';
   const brief = clean(req.body?.brief, 2000);
   if (name.length < 2 || whatsapp.replace(/\D/g, '').length < 10 || brief.length < 12 || req.body?.consent !== 'on') {
     return res.status(400).json({ error: 'Confira seu nome, WhatsApp e descrição do projeto.' });
   }
   try {
-    const settingsRows = await dbRequest(`site_settings?${query({ select: 'key,value', key: 'eq.whatsapp', limit: '1' })}`);
-    const number = String(settingsRows?.[0]?.value || process.env.WHATSAPP_NUMBER || '').replace(/\D/g, '');
+    const settingsRows = await dbRequest(`site_settings?${query({ select: 'key,value', key: 'in.(whatsapp,whatsapp_secondary)' })}`);
+    const settings = Object.fromEntries((settingsRows || []).map((row) => [row.key, row.value]));
+    const number = String(recipient === 'secondary' ? settings.whatsapp_secondary : (settings.whatsapp || process.env.WHATSAPP_NUMBER || '')).replace(/\D/g, '');
     if (number.length < 10) return res.status(503).json({ error: 'O WhatsApp do estúdio ainda não foi configurado. Tente novamente mais tarde.' });
     const rows = await dbRequest('orders', {
       method: 'POST',
