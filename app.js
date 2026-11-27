@@ -42,10 +42,8 @@ function renderProjects() {
 }
 
 function applySettings() {
-  const name = settings.brand_name || 'raiz studio';
-  const parts = String(name).split(/\s+/);
-  document.querySelector('#brand-name').innerHTML = `${escapeHtml(parts[0] || 'raiz')}<span>${escapeHtml(parts.slice(1).join(' ') || 'studio')}</span>`;
-  document.querySelector('#footer-brand').innerHTML = `${escapeHtml(parts[0] || 'raiz')}<span>${escapeHtml(parts.slice(1).join(' ') || 'studio')}</span>`;
+  const configuredName = settings.brand_name || 'Raiz Estúdio';
+  const name = configuredName === 'Raiz Studio' ? 'Raiz Estúdio' : configuredName;
   document.querySelector('#hero-tagline').textContent = settings.tagline || 'Criamos sites rápidos, bonitos e pensados para transformar visitas em conversas.';
   document.querySelectorAll('.whatsapp-link').forEach((link) => {
     const phone = String(settings.whatsapp || '').replace(/\D/g, '');
@@ -61,7 +59,7 @@ function applySettings() {
   const email = document.querySelector('#email-link');
   if (settings.instagram_url) { instagram.href = settings.instagram_url; instagram.hidden = false; } else instagram.hidden = true;
   if (settings.contact_email) { email.href = `mailto:${encodeURIComponent(settings.contact_email)}`; email.hidden = false; } else email.hidden = true;
-  document.title = `${settings.brand_name || 'Raiz Studio'} — Sites feitos para crescer`;
+  document.title = `${name} — Sites feitos para crescer`;
 }
 
 function openOrder(selected = '') {

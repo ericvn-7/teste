@@ -2,7 +2,7 @@ const { dbRequest, query } = require('../lib/db');
 const demoProjects = require('../data/demo-projects.json');
 
 const defaults = {
-  brand_name: 'Raiz Studio',
+  brand_name: 'Raiz Estúdio',
   tagline: 'Criamos sites rápidos, bonitos e pensados para transformar visitas em conversas.',
   whatsapp: '',
   instagram_url: '',

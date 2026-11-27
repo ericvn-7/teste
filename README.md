@@ -1,4 +1,4 @@
-# Raiz Studio — vitrine e encomendas
+# Raiz Estúdio — vitrine e encomendas
 
 Site de divulgação de projetos digitais com formulário de pedidos pelo WhatsApp e painel administrativo em `/admin`. Não há checkout nem gateway de pagamento: cada pedido é registrado para acompanhamento e, em seguida, o cliente abre uma conversa no WhatsApp.
 

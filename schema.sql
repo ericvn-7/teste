@@ -53,7 +53,7 @@ grant all on public.site_admins, public.projects, public.orders, public.site_set
 grant usage, select on all sequences in schema public to service_role;
 
 insert into public.site_settings (key, value) values
-  ('brand_name', '"Raiz Studio"'::jsonb),
+  ('brand_name', '"Raiz Estúdio"'::jsonb),
   ('tagline', '"Criamos sites rápidos, bonitos e pensados para transformar visitas em conversas."'::jsonb),
   ('whatsapp', '""'::jsonb),
   ('instagram_url', '""'::jsonb),

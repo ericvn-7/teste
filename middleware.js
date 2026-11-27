@@ -5,7 +5,7 @@ const ADMIN_PATHS = new Set(['/admin', '/admin/', '/admin.html', '/admin.js', '/
 function unauthorized(message = 'Acesso restrito.') {
   return new Response(message, {
     status: 401,
-    headers: { 'WWW-Authenticate': 'Basic realm="Raiz Studio Admin", charset="UTF-8"' }
+    headers: { 'WWW-Authenticate': 'Basic realm="Raiz Estúdio Admin", charset="UTF-8"' }
   });
 }
 
