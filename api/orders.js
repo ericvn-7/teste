@@ -1,4 +1,4 @@
-const { dbRequest, query } = require('../../lib/db');
+const { dbRequest, query } = require('../lib/db');
 const { requireAdmin, safeMethod } = require('../../lib/auth');
 const STATUSES = ['novo', 'em_conversa', 'em_andamento', 'concluido', 'arquivado'];
 
