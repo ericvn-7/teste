@@ -19,8 +19,8 @@ function errorMessage(error, fallback = 'Algo deu errado. Tente novamente.') {
 }
 
 function accentFrom(project) {
-  if (['sun', 'rose', 'blue', 'ink'].includes(project.accent)) return project.accent;
-  const options = ['mint', 'sun', 'rose', 'blue'];
+  if (['sun', 'rose', 'blue', 'ink', 'violet', 'sand'].includes(project.accent)) return project.accent;
+  const options = ['mint', 'sun', 'rose', 'blue', 'violet', 'sand'];
   let n = 0;
   for (const char of String(project.slug || project.title)) n += char.charCodeAt(0);
   return options[n % options.length];
@@ -35,7 +35,7 @@ function renderProjects() {
   projectGrid.innerHTML = visible.map((project, index) => {
     const accent = accentFrom(project);
     const image = project.image_url ? `<img src="${escapeHtml(project.image_url)}" alt="Prévia de ${escapeHtml(project.title)}" loading="lazy">` : '';
-    const mock = `<div class="browser-mock"><span class="mock-tag">${escapeHtml(project.category.toUpperCase())}</span><div class="mock-title">${escapeHtml(project.mock_title || project.title).replace(/&lt;br\s*\/?&gt;/gi, ' ')}</div><div class="mock-pill"></div><div class="mock-shape"></div></div>`;
+    const mock = `<div class="browser-mock"><div class="mock-version"><span>●</span><span>●</span><span>●</span><b>VERSÃO 0${(index % 3) + 1}</b></div><span class="mock-tag">${escapeHtml(project.category.toUpperCase())}</span><div class="mock-title">${escapeHtml(project.mock_title || project.title).replace(/&lt;br\s*\/?&gt;/gi, ' ')}</div><div class="mock-pill"></div><div class="mock-shape"></div><span class="mock-page-count">01 — 03</span></div>`;
     const preview = project.demo_url ? `<a href="${escapeHtml(project.demo_url)}" target="_blank" rel="noopener noreferrer">Ver demonstração <span>↗</span></a>` : `<button type="button" data-request="${escapeHtml(project.title)}">Quero algo assim <span>↗</span></button>`;
     return `<article class="project-card" style="animation-delay:${index * 60}ms"><div class="project-art" data-accent="${accent}">${image || mock}<span class="project-badge">${escapeHtml(project.badge || 'PROJETO CONCEITUAL')}</span></div><div class="project-info"><span class="project-category">${escapeHtml(project.category)}</span><h3>${escapeHtml(project.title)}</h3><p>${escapeHtml(project.description)}</p><div class="project-meta"><span>${escapeHtml(project.price_label || 'Orçamento sob consulta')}</span>${preview}</div></div></article>`;
   }).join('');
@@ -50,6 +50,8 @@ function applySettings() {
   const recipientSelect = document.querySelector('#whatsapp-recipient');
   if (recipientField && recipientSelect) {
     recipientField.hidden = secondaryPhone.length < 10;
+    recipientSelect.options[0].textContent = settings.admin_name_1 || 'Atendimento 1';
+    recipientSelect.options[1].textContent = settings.admin_name_2 || 'Atendimento 2';
     if (secondaryPhone.length < 10) recipientSelect.value = 'primary';
   }
   document.querySelectorAll('.whatsapp-link').forEach((link) => {

@@ -6,6 +6,8 @@ const defaults = {
   tagline: 'Criamos sites rápidos, bonitos e pensados para transformar visitas em conversas.',
   whatsapp: '',
   whatsapp_secondary: '',
+  admin_name_1: 'Atendimento 1',
+  admin_name_2: 'Atendimento 2',
   instagram_url: '',
   contact_email: ''
 };

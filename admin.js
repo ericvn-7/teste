@@ -1,5 +1,8 @@
 const state = { admin: null, orders: [], projects: [], settings: {}, orderFilter: 'todos', editingProject: null };
 const $ = (selector, root = document) => root.querySelector(selector);
+const projectCategories = ['Institucional', 'Loja virtual', 'Landing page', 'Blog', 'Receitas', 'Notícias'];
+$('#project-form').elements.category.innerHTML = projectCategories.map((category) => `<option>${category}</option>`).join('');
+$('#profile-form').insertAdjacentHTML('afterbegin', '<label>Nome que aparece para os clientes<input name="displayName" required maxlength="60" autocomplete="name" placeholder="Ex.: Ana ou Equipe Raiz"></label>');
 
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -65,6 +68,11 @@ async function loadDashboard() {
     state.orders = orderData.orders || [];
     state.projects = projectData.projects || [];
     state.settings = settingsData.settings || {};
+    const ownNameKey = `admin_name_${state.admin.slot}`;
+    const displayName = state.settings[ownNameKey] || `Atendimento ${state.admin.slot}`;
+    $('#profile-form').elements.displayName.value = displayName;
+    $('#admin-name').textContent = displayName;
+    $('#admin-avatar').textContent = displayName.slice(0, 1).toUpperCase();
     renderOrders();
     renderProjects();
     fillSettings();
@@ -247,7 +255,10 @@ $('#profile-form').addEventListener('submit', async (event) => {
   formMessage(form, 'Atualizando acesso…');
   try {
     const result = await api('/api/admin/profile', { method: 'PATCH', body: Object.fromEntries(new FormData(form)) });
+    state.settings[`admin_name_${state.admin.slot}`] = result.admin.displayName;
     showDashboard(result.admin);
+    $('#admin-name').textContent = result.admin.displayName;
+    $('#admin-avatar').textContent = result.admin.displayName.slice(0, 1).toUpperCase();
     form.elements.currentPassword.value = '';
     form.elements.newPassword.value = '';
     formMessage(form, 'Seu acesso foi atualizado.', true);

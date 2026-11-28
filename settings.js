@@ -1,6 +1,6 @@
 const { dbRequest, query } = require('../../lib/db');
 const { requireAdmin, safeMethod } = require('../../lib/auth');
-const ALLOWED = ['brand_name', 'tagline', 'whatsapp', 'whatsapp_secondary', 'instagram_url', 'contact_email'];
+const ALLOWED = ['brand_name', 'tagline', 'whatsapp', 'whatsapp_secondary', 'admin_name_1', 'admin_name_2', 'instagram_url', 'contact_email'];
 
 module.exports = requireAdmin(async function handler(req, res) {
   if (req.method === 'GET') {

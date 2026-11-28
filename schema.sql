@@ -14,7 +14,7 @@ create table if not exists public.projects (
   id uuid primary key default gen_random_uuid(),
   slug text not null unique,
   title text not null,
-  category text not null check (category in ('Institucional', 'Loja virtual', 'Landing page')),
+  category text not null check (category in ('Institucional', 'Loja virtual', 'Landing page', 'Blog', 'Receitas', 'Notícias')),
   description text not null,
   price_label text not null default 'Sob consulta',
   demo_url text not null default '',
@@ -63,7 +63,8 @@ on conflict (key) do nothing;
 
 insert into public.projects (slug, title, category, description, price_label, accent, badge, mock_title, sort_order)
 values
-  ('casa-nativa', 'Casa Nativa', 'Institucional', 'Uma presença digital acolhedora para um estúdio de arquitetura e interiores.', 'Sob consulta', 'mint', 'ARQUITETURA', 'Espaços com histórias para contar.', 1),
-  ('flor-de-sol', 'Flor de Sol', 'Loja virtual', 'Uma loja leve e intuitiva para uma marca independente de cuidado pessoal.', 'Sob consulta', 'sun', 'E-COMMERCE', 'Um cuidado que floresce.', 2),
-  ('movimento-livre', 'Movimento Livre', 'Landing page', 'Uma página de campanha direta, feita para transformar interesse em contato.', 'Sob consulta', 'rose', 'CAMPANHA', 'Seu próximo passo começa aqui.', 3)
+  ('caderno-de-domingo', 'Caderno de Domingo', 'Blog', 'Um blog editorial para publicar histórias, entrevistas e ideias com leitura confortável.', 'Sob consulta', 'rose', 'BLOG · CULTURA', 'Ideias que merecem ser lidas.', 1),
+  ('mesa-de-afeto', 'Mesa de Afeto', 'Receitas', 'Receitas organizadas por ocasião, ingredientes e tempo de preparo.', 'Sob consulta', 'sun', 'RECEITAS · GASTRONOMIA', 'Hoje tem sabor de casa.', 2),
+  ('ponto-presente', 'Ponto Presente', 'Loja virtual', 'Uma loja online acolhedora para descobrir produtos e comprar com facilidade.', 'Sob consulta', 'blue', 'LOJA · PRESENTES', 'Encontre algo especial.', 3),
+  ('agora-em-foco', 'Agora em Foco', 'Notícias', 'Um portal de notícias com editorias, manchetes e leitura clara em qualquer tela.', 'Sob consulta', 'ink', 'NOTÍCIAS · PORTAL', 'O que acontece importa.', 4)
 on conflict (slug) do nothing;

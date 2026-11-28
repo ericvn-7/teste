@@ -1,6 +1,6 @@
 const { dbRequest, query } = require('../../lib/db');
 const { requireAdmin, safeMethod } = require('../../lib/auth');
-const CATEGORIES = ['Institucional', 'Loja virtual', 'Landing page'];
+const CATEGORIES = ['Institucional', 'Loja virtual', 'Landing page', 'Blog', 'Receitas', 'Notícias'];
 
 function safeUrl(value, required = false) {
   const input = String(value || '').trim();
