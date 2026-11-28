@@ -3,6 +3,14 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const projectCategories = ['Institucional', 'Loja virtual', 'Landing page', 'Blog', 'Receitas', 'Notícias'];
 $('#project-form').elements.category.innerHTML = projectCategories.map((category) => `<option>${category}</option>`).join('');
 $('#profile-form').insertAdjacentHTML('afterbegin', '<label>Nome que aparece para os clientes<input name="displayName" required maxlength="60" autocomplete="name" placeholder="Ex.: Ana ou Equipe Raiz"></label>');
+$('#profile-form').querySelectorAll('label').forEach((label) => {
+  if (!label.querySelector('[name="displayName"]')) label.remove();
+});
+$('#profile-form').insertAdjacentHTML('beforeend', '<label class="check-label profile-password-toggle"><input type="checkbox" name="changePassword" value="true"> Quero alterar minha senha também</label><div id="profile-password-fields" hidden><label>Nova senha (mínimo de 12 caracteres)<input name="newPassword" type="password" minlength="12" maxlength="200" autocomplete="new-password"></label><label>Repita a nova senha<input name="confirmPassword" type="password" minlength="12" maxlength="200" autocomplete="new-password"></label></div>');
+$('#profile-form').elements.changePassword.addEventListener('change', (event) => {
+  $('#profile-password-fields').hidden = !event.currentTarget.checked;
+});
+$('#profile-form').previousElementSibling.textContent = 'Esse nome será mostrado aos clientes na escolha de quem vai atender. Ele não altera seu usuário nem sua senha.';
 
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -254,15 +262,25 @@ $('#profile-form').addEventListener('submit', async (event) => {
   button.disabled = true;
   formMessage(form, 'Atualizando acesso…');
   try {
-    const result = await api('/api/admin/profile', { method: 'PATCH', body: Object.fromEntries(new FormData(form)) });
-    state.settings[`admin_name_${state.admin.slot}`] = result.admin.displayName;
-    showDashboard(result.admin);
-    $('#admin-name').textContent = result.admin.displayName;
-    $('#admin-avatar').textContent = result.admin.displayName.slice(0, 1).toUpperCase();
-    form.elements.currentPassword.value = '';
+    const displayName = form.elements.displayName.value.trim();
+    const changePassword = form.elements.changePassword.checked;
+    const result = await api('/api/admin/profile', { method: 'PATCH', body: {
+      displayName,
+      changePassword,
+      newPassword: changePassword ? form.elements.newPassword.value : '',
+      confirmPassword: changePassword ? form.elements.confirmPassword.value : ''
+    } });
+    const savedName = result.admin?.displayName || displayName;
+    state.settings[`admin_name_${state.admin.slot}`] = savedName;
+    $('#admin-name').textContent = savedName;
+    $('#admin-avatar').textContent = savedName.slice(0, 1).toUpperCase();
+    form.elements.changePassword.checked = false;
     form.elements.newPassword.value = '';
-    formMessage(form, 'Seu acesso foi atualizado.', true);
-    toast('Acesso atualizado.');
+    form.elements.confirmPassword.value = '';
+    $('#profile-password-fields').hidden = true;
+    const message = result.passwordChanged ? 'Nome atualizado e senha alterada conforme solicitado.' : 'Nome atualizado. Usuário e senha permaneceram inalterados.';
+    formMessage(form, message, true);
+    toast(result.passwordChanged ? 'Nome e senha atualizados.' : 'Nome de atendimento atualizado.');
   } catch (error) { formMessage(form, error.message); }
   finally { button.disabled = false; }
 });
